@@ -1,4 +1,11 @@
+"""
+Shortest Path
+
+http://www.reddit.com/r/dailyprogrammer/comments/17jvoh/013013_challenge_119_intermediate_find_the/
+"""
+
 import queue
+import sys
 
 gridSize = int(input())
 
@@ -16,15 +23,13 @@ for i in range(gridSize):
 q = queue.Queue()
 q.put(startPos)
 found = False
+
 while not q.empty():
 	curr = q.get()
 	if world[curr[0]][curr[1]] == 'E':
-		print("path length = ", curr[2])
-		break
+		print("True, ", curr[2])
+		sys.exit()
 	world[curr[0]][curr[1]] = 'W'
-	for i in range(gridSize):
-		print(world[i])
-	print('\n')
 	if curr[0] > 0:
 		north = (curr[0] - 1, curr[1], curr[2] + 1)
 		if world[north[0]][north[1]] != 'W':
@@ -45,3 +50,4 @@ while not q.empty():
 		if world[west[0]][west[1]] != 'W':
 			q.put(west)
 
+print

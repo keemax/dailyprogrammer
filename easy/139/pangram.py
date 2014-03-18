@@ -1,8 +1,14 @@
+"""
+Pangrams
+
+http://www.reddit.com/r/dailyprogrammer/comments/1pwl73/11413_challenge_139_easy_pangrams/
+"""
+
 import sys
 
 def main():
 	if len(sys.argv) != 2:
-		print("usage: python3 pangram.py [input file]")
+		print("usage: pangram.py [input file]")
 		sys.exit()
 	inputFile = open(sys.argv[1], 'r')
 	numLines = int(inputFile.readline())

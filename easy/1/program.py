@@ -1,3 +1,9 @@
+"""
+Simple IO
+
+http://www.reddit.com/r/dailyprogrammer/comments/pih8x/easy_challenge_1/
+"""
+
 name = input("what's your name\n")
 age = input("how old are you?\n")
 redditName = input("what's your reddit name?\n")

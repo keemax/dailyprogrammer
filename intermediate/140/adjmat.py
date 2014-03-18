@@ -1,3 +1,9 @@
+"""
+Adjacency Matrix
+
+http://www.reddit.com/r/dailyprogrammer/comments/1t6dlf/121813_challenge_140_intermediate_adjacency_matrix/
+"""
+
 vertices, numLines = map(int, input().split())
 matrix = [vertices * [0] for i in range(vertices)]
 

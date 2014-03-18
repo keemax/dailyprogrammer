@@ -1,8 +1,14 @@
+"""
+Caeser Cipher
+
+http://www.reddit.com/r/dailyprogrammer/comments/pkw2m/2112012_challenge_3_easy/
+"""
+
 import sys
 
 def main():
 	if len(sys.argv) != 3:
-		print("usage: python3 program.py [-e or -d] [shift amount]")
+		print("usage: program.py [-e or -d] [shift amount]")
 		sys.exit()
 
 	try:
@@ -18,7 +24,7 @@ def main():
 			textToDecrypt = input("enter message to decrypt\n")
 			print(decryptCaesar(textToDecrypt, shift))
 		else:
-			print("usage: python3 program.py [-e or -d] [shift amount]")
+			print("usage: program.py [-e or -d] [shift amount]")
 			sys.exit()
 
 def encryptCaesar(text, shift):
