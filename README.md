@@ -1,3 +1,3 @@
-In an attempt to learn python, I've started doing some random challenges on reddit's daily programmer.
+## Daily Programmer
 
-http://www.reddit.com/r/dailyprogrammer
+In an attempt to learn python, I've started doing some random challenges on reddit's [daily programmer](http://www.reddit.com/r/dailyprogrammer).
