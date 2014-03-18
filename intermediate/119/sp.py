@@ -50,4 +50,4 @@ while not q.empty():
 		if world[west[0]][west[1]] != 'W':
 			q.put(west)
 
-print
+print("no path found")
