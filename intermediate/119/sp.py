@@ -33,67 +33,69 @@ def main():
 				endPos = (i, j)
 
 	if sys.argv[1] == '-d':
-		bfsStart = time.clock()
 		breadthFirstSearch(world, startPos)
-		print("bfs time taken: {0:.5f}".format(time.clock() - bfsStart))
 	else:
-		asStart = time.clock()
 		aStarSearch(world, startPos, endPos)
-		print("a* time taken: {0:.5f}".format(time.clock() - asStart))
 	
 # basic breadth first search using a queue
 def breadthFirstSearch(world, startPos):
 	q = queue.Queue()
 	# add distance from start tile so final distance can be calculated
-	startPos = (startPos[0], startPos[1], 0)
+	startPos = (startPos[0], startPos[1], None)
 	q.put(startPos)
-	done = False
-	while not q.empty() and not done:
+	lastTile = None
+	while not q.empty() and lastTile == None:
 		curr = q.get()
 		if curr[0] > 0:
-			north = (curr[0] - 1, curr[1], curr[2] + 1)
-			done = checkTileDfs(north, world, q)
+			north = (curr[0] - 1, curr[1], curr)
+			lastTile = checkTileDfs(north, world, q)
 
 		if curr[1] < len(world) - 1:
-			east = (curr[0], curr[1] + 1, curr[2] + 1)
-			done = checkTileDfs(east, world, q)
+			east = (curr[0], curr[1] + 1, curr)
+			lastTile = checkTileDfs(east, world, q)
 
 		if curr[0] < len(world) - 1:
-			south = (curr[0] + 1, curr[1], curr[2] + 1)
-			done = checkTileDfs(south, world, q)
+			south = (curr[0] + 1, curr[1], curr)
+			lastTile = checkTileDfs(south, world, q)
 
 		if curr[1] > 0:
-			west = (curr[0], curr[1] - 1, curr[2] + 1)
-			done = checkTileDfs(west, world, q)
-	if not done:
-		print("no path found")	
+			west = (curr[0], curr[1] - 1, curr)
+			lastTile = checkTileDfs(west, world, q)
+	if lastTile == None:
+		print("no path found")
+	else:
+		printFinishedWorld(world, lastTile)	
+
 
 # a* search using distance as the crow flies for a heuristic
 def aStarSearch(world, startPos, endPos):
 	heap = []
 	# add distance from start tile so final distance can be calculated
-	startPos = (startPos[0], startPos[1], 0)
+	# also add the previously travelled tile
+	startPos = (startPos[0], startPos[1], None)
 	pushToHeap(heap, startPos, endPos)
-	done = False
-	while len(heap) > 0 and not done:
+	lastTile = None
+	while len(heap) > 0 and lastTile == None:
 		curr = heapq.heappop(heap)[1]
 		if curr[0] > 0:
-			north = (curr[0] - 1, curr[1], curr[2] + 1)
-			done = checkTileAStar(north, world, heap, endPos)
+			north = (curr[0] - 1, curr[1], curr)
+			lastTile = checkTileAStar(north, world, heap, endPos)
 
 		if curr[1] < len(world) - 1:
-			east = (curr[0], curr[1] + 1, curr[2] + 1)
-			done = checkTileAStar(east, world, heap, endPos)
+			east = (curr[0], curr[1] + 1, curr)
+			lastTile = checkTileAStar(east, world, heap, endPos)
 
 		if curr[0] < len(world) - 1:
-			south = (curr[0] + 1, curr[1], curr[2] + 1)
-			done = checkTileAStar(south, world, heap, endPos)
+			south = (curr[0] + 1, curr[1], curr)
+			lastTile = checkTileAStar(south, world, heap, endPos)
 
 		if curr[1] > 0:
-			west = (curr[0], curr[1] - 1, curr[2] + 1)
-			done = checkTileAStar(west, world, heap, endPos)
-	if not done:
+			west = (curr[0], curr[1] - 1, curr)
+			lastTile = checkTileAStar(west, world, heap, endPos)
+	if lastTile == None:
 		print("no path found")
+	else:
+		printFinishedWorld(world, lastTile)
 
 # calculate distance between two points for a* heuristic
 def pushToHeap(heap, pos, end):
@@ -104,20 +106,34 @@ def checkTileAStar(tile, world, heap, end):
 	if world[tile[0]][tile[1]] == '.':
 		world[tile[0]][tile[1]] = 'Q'
 		pushToHeap(heap, tile, end)	
-		return False
+		return None
 	elif world[tile[0]][tile[1]] == 'E':
-		print("True, " + str(tile[2]))
-		return True
+		return tile
 
 def checkTileDfs(tile, world, q):
 	if world[tile[0]][tile[1]] == '.':
 		world[tile[0]][tile[1]] = 'Q'
 		q.put(tile)	
-		return False
+		return None
 	elif world[tile[0]][tile[1]] == 'E':
-		print("True, " + str(tile[2]))
-		return True
+		return tile
 
+def printFinishedWorld(world, lastTile):
+	pathCount = 0
+	while lastTile[2] != None:
+		pathCount += 1
+		world[lastTile[0]][lastTile[1]] = '@'
+		lastTile = lastTile[2]
+
+	for worldRow in world:
+		for tile in worldRow:
+			if tile == 'Q':
+				print('.', end='')
+			else:
+				print(tile, end='')
+		print('')
+
+	print("True, {0}".format(pathCount))
 
 if __name__ == "__main__":
 	main()
